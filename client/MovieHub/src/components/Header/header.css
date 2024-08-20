@@ -1,0 +1,21 @@
+.header-wrapper {
+  width: 90%;
+  margin: 0 auto;
+}
+
+.custom-navbar {
+  background-color: #a99985;
+}
+
+.navbar-nav {
+  list-style-type: none;
+  padding-left: 0;
+}
+
+.nav-link {
+  color: white;
+}
+
+.nav-link:hover {
+  color: #ddd;
+}
