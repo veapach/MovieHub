@@ -1,15 +1,29 @@
 .header-wrapper {
   width: 90%;
+  height: 60%;
   margin: 0 auto;
+}
+
+.navbar-brand {
+  width: 7%;
 }
 
 .custom-navbar {
   background-color: #a99985;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom-left-radius: 15px;
+  border-bottom-right-radius: 15px;
 }
 
 .navbar-nav {
   list-style-type: none;
   padding-left: 0;
+}
+
+.ms-auto {
+  margin-left: auto;
 }
 
 .nav-link {

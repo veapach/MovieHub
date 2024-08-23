@@ -1,18 +1,19 @@
 import React from "react";
 import MovieHubLogo from "../../assets/images/MovieHubLogo.png";
-import "./header.css"; // Импортируйте стили
+import "./header.css";
 
 const Header = () => {
   return (
     <div className="header-wrapper">
       <nav className="navbar navbar-expand-lg custom-navbar">
         <div className="container-fluid">
-          <img
+          {/* TODO: найти нормальную картинку логотипа */}
+          {/* <img
             className="navbar-brand"
             src={MovieHubLogo}
             alt="Movie Hub Logo"
-          />
-          <ul className="navbar-nav me-auto">
+          /> */}
+          <ul className="navbar-nav ms-auto">
             <li className="nav-item">
               <a className="nav-link" href="#">
                 Главная
