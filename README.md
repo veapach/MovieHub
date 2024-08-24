@@ -1,3 +1,3 @@
 **Диаграмма Сущностей:**
 
-![ДиаграммаСущностей](https://github.com/user-attachments/assets/38b4569f-53fe-426d-a6d1-a133f19bf164)
+![image](https://github.com/user-attachments/assets/d3a4fd43-e9fb-48c2-a58e-542e90ac3ca3)
