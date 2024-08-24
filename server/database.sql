@@ -37,6 +37,7 @@ CREATE TABLE watched_films (
     id SERIAL PRIMARY KEY,
     user_id INTEGER REFERENCES users(id) ON DELETE CASCADE,
     film_id INTEGER REFERENCES films(id) ON DELETE CASCADE, -- Id просмотренного фильма
+    review_id INTEGER REFERENCES reviews(id) ON DELETE SET NULL,
     date_of_watching TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP
 );
 
@@ -46,6 +47,6 @@ CREATE TABLE reviews (
     user_id INTEGER REFERENCES users(id) ON DELETE CASCADE,
     film_id INTEGER REFERENCES films(id) ON DELETE CASCADE,
     review TEXT,
-    rating DECIMAL(2, 1) CHECK (rating >= 0 AND rating <= 10), -- Рейтинг отзыва от 0 до 10
+    rating INTEGER CHECK (rating >= 0 AND rating <= 10), -- Рейтинг отзыва от 0 до 10
     date_of_review TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP
 );
