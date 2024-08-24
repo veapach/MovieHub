@@ -1,0 +1,7 @@
+подключение в postgre:
+1. cd "C:\Program Files\PostgreSQL\16\bin" (перейти в директорию где установлен postgre)
+2. ./psql -U postgres (зайти под юзером postgres)
+3. \connect movie_hub(название таблицы нужной)
+4. ./psql \! chcp 1251 (отображение кириллицы) 
+
+запуск через npm run dev(nodemon)
