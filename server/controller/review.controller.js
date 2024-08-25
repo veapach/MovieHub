@@ -43,6 +43,20 @@ class ReviewController {
     ]);
     res.json(newReview.rows[0]);
   }
+
+  // Получение средней оценки для определенного фильма
+  async getAverageRating(req, res) {
+    const film_id = req.query.film_id;
+    const result = await db.query("SELECT AVG(rating) AS average_rating FROM reviews WHERE film_id = $1", [film_id]);
+    const averageRating = result.rows[0].average_rating;
+
+    // Проверка, чтобы избежать возврата null, если нет отзывов для фильма
+    if (averageRating === null) {
+      return res.status(404).json({ message: "Нет отзывов для данного фильма" });
+    }
+
+    res.json({ averageRating: parseFloat(averageRating).toFixed(2) });
+  }
 }
 
 module.exports = new ReviewController();
