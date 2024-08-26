@@ -1,11 +1,29 @@
+require("dotenv").config();
 const express = require("express");
-const userRouter = require("./routes/user.routes");
-const reviewRouter = require("./routes/review.routes");
-const app = express();
+const sequelize = require("./db");
+const models = require("./models/models");
+const cors = require("cors");
+const router = require("./routes/index");
+const errorHandler = require("./middleware/ErrorHandlingMiddleware");
+
 const PORT = process.env.PORT || 8080;
 
+const app = express();
+app.use(cors());
 app.use(express.json());
-app.use("/api", userRouter); //API к пользователю
-app.use("/api", reviewRouter); //API к отзывам
+app.use("/api", router);
 
-app.listen(PORT, () => console.log(`Server is running on ${PORT}`));
+// Обработчик ошибок, последний Middleware
+app.use(errorHandler);
+
+const start = async () => {
+  try {
+    await sequelize.authenticate();
+    await sequelize.sync();
+    app.listen(PORT, () => console.log(`Server is running on ${PORT}`));
+  } catch (e) {
+    console.log(e);
+  }
+};
+
+start();
