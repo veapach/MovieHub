@@ -7,3 +7,11 @@
 
 Figma - https://www.figma.com/design/pydirDpLV6DajKFxq4TYg5/KinoSite?node-id=0-1&t=i1LMHSZDrubFM2bA-1
 
+DataBase GUI - DBeaver
+
+TO-DO [BACKEND]:
+
+1. API к Review
+2. Документация к API
+3. API к User(add friends)
+4. Что еще может понадобиться на фронте - дописать
