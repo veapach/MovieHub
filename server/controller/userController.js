@@ -1,89 +1,46 @@
-// const db = require("../db");
-
-// class UserController {
-//   //Создание пользователя(user_pass - временно, потом сделаем по нормальному с шифровкой, чтоб не хранить в открытом виде)
-//   //isAdmin по умолчанию будет false, можно будет изменить руками в БД, либо на админ панели
-//   async createUser(req, res) {
-//     const { nickname, email, password, isAdmin } = req.body;
-
-//     const newPerson = await db.query(
-//       "INSERT INTO users (nickname, email, password, isAdmin) VALUES ($1, $2, $3, $4) RETURNING *",
-//       [nickname, email, password, registration_date, isAdmin]
-//     );
-
-//     console.log(nickname, email, password, registration_date, isAdmin);
-
-//     res.json(newPerson.rows[0]);
-//   }
-
-//   //Получение всех пользователей
-//   async getUsers(req, res) {
-//     const users = await db.query("SELECT * FROM users");
-//     res.json(users.rows);
-//   }
-
-//   //Получение определенного пользователя
-//   async getOneUser(req, res) {
-//     const id = req.params.id;
-//     const user = await db.query("SELECT * FROM users  WHERE id = $1", [id]);
-
-//     res.json(user.rows);
-//   }
-
-//   //Изменение пользователя
-//   //Можно будет доработать, чтобы пользователь мог сам менять о себе инфу в редактировании профиля и все обрабатывалось этим запросом
-//   async updateUser(req, res) {
-//     const id = req.params.id;
-//     const { nickname, email, user_pass, isAdmin } = req.body;
-//     const user = await db.query(
-//       "UPDATE users SET nickname = $1, email = $2, user_pass = $3,isAdmin = $4 WHERE id = $6 RETURNING *",
-//       [nickname, email, user_pass, registration_date, isAdmin, id]
-//     );
-//     res.json(user.rows[0]);
-//   }
-
-//   //Удаление пользователя
-//   async deleteUser(req, res) {
-//     const id = req.params.id;
-//     const user = await db.query("DELETE FROM users WHERE id = $1", [id]);
-
-//     res.json(user.rows);
-//   }
-
-//   //Проверка есть ли у пользователя права админа
-//   //Запрос http://localhost:8080/api/user/isadmin?id=1
-//   //Возвращает true, либо false
-//   async isUserAdmin(req, res) {
-//     const id = req.query.id;
-//     const result = await db.query(
-//       `
-//       SELECT isadmin
-//       FROM users
-//       WHERE id = $1
-//     `,
-//       [id]
-//     );
-
-//     const isAdmin = result.rows[0].isAdmin;
-//     return res.json({ isAdmin });
-//   }
-// }
-
-// module.exports = new UserController();
-
 const ApiError = require("../error/ApiError");
+const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
+const { User, WatchList, WatchedList } = require("../models/models");
+
+const generateJwt = (id, email, role) => {
+  return jwt.sign({ id, email, role }, process.env.SECRET_KEY, { expiresIn: "24h" });
+};
 
 class UserController {
-  async registration(req, res) {}
-  async login(req, res) {}
-  async auth(req, res) {
-    const { id } = req.query;
-    if (!id) {
-      return next(ApiError.badRequest("Не задан ID"));
+  async registration(req, res, next) {
+    const { nickname, email, password, avatar, role, reg_date } = req.body;
+    if (!email || !password) {
+      return next(ApiError.badRequest("Некорректный email или password"));
     }
-    res.json(id);
+    const candidate = await User.findOne({ where: { email } });
+    if (candidate) {
+      return next(ApiError.badRequest("Пользователь с таким email уже существует"));
+    }
+    const hashPassword = await bcrypt.hash(password, 5);
+    const user = await User.create({ nickname, email, password: hashPassword, avatar, role, reg_date });
+    const watch_list = await WatchList.create({ userId: user.id });
+    const watched_list = await WatchedList.create({ userId: user.id });
+    const token = generateJwt(user.id, user.email, user.role);
+    return res.json({ token });
   }
-  async createUser(req, res) {}
+  async login(req, res, next) {
+    const { email, password } = req.body;
+    const user = await User.findOne({ where: { email } });
+    if (!user) {
+      return next(ApiError.internal("Пользователь не найден"));
+    }
+    let comparePassword = bcrypt.compareSync(password, user.password);
+    if (!comparePassword) {
+      return next(ApiError.internal("Указан неверный пароль"));
+    }
+    const token = generateJwt(user.id, user.email, user.role);
+    return res.json({ token });
+  }
+  async auth(req, res) {
+    const token = generateJwt(user.id, user.email, user.role);
+    return res.json({ token });
+  }
   async getUsers(req, res) {}
   async getOneUser(req, res) {}
   async updateUser(req, res) {}

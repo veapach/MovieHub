@@ -39,13 +39,13 @@ class filmController {
       films = await Film.findAndCountAll({ limit, offset });
     }
     if (genre && !rating) {
-      films = await Film.findAndCountAll({ where: { genre: genre }, limit, offset });
+      films = await Film.findAndCountAll({ where: { genre }, limit, offset });
     }
     if (!genre && rating) {
       films = await Film.findAndCountAll({ where: { rating: { [Op.gte]: rating } }, limit, offset });
     }
     if (genre && rating) {
-      films = await Film.findAndCountAll({ where: { genre: genre, rating: { [Op.gte]: rating } }, limit, offset });
+      films = await Film.findAndCountAll({ where: { genre, rating: { [Op.gte]: rating } }, limit, offset });
     }
     return res.json(films);
   }
