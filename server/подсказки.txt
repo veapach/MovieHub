@@ -6,7 +6,7 @@
 
 запуск через npm run dev(nodemon)
 
-req.paramds = api/user/{user_id}
+req.params = api/user/{user_id}
 req.query = api/user?id=1
 
 https://sequelize.org/docs/v7/models/data-types/

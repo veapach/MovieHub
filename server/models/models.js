@@ -24,6 +24,7 @@ const Review = sequelize.define("review", {
 const Film = sequelize.define("film", {
   id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
   name: { type: DataTypes.STRING(200), allowNull: false },
+  poster: { type: DataTypes.STRING },
   genre: { type: DataTypes.STRING(50) },
   year_of_release: { type: DataTypes.INTEGER },
   cast_members: { type: DataTypes.ARRAY(DataTypes.STRING) },
