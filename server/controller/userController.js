@@ -41,11 +41,53 @@ class UserController {
     const token = generateJwt(user.id, user.email, user.role);
     return res.json({ token });
   }
-  async getUsers(req, res) {}
-  async getOneUser(req, res) {}
-  async updateUser(req, res) {}
-  async deleteUser(req, res) {}
-  async isUserAdmin(req, res) {}
+  async getUsers(req, res) {
+    const users = await User.findAll();
+    return res.json(users);
+  }
+  async getOneUser(req, res) {
+    const { id } = req.params;
+    const user = await User.findOne({ where: { id } });
+    return res.json(user);
+  }
+  async updateUser(req, res, next) {
+    try {
+      const { id } = req.query;
+      const { nickname, email, password, avatar } = req.body;
+
+      const user = await User.findOne({ where: { id } });
+
+      if (!user) {
+        return next(ApiError.notFound("Пользователь не найден"));
+      }
+
+      let updatedData = { nickname, email, avatar };
+      if (password) {
+        const hashPassword = await bcrypt.hash(password, 5);
+        updatedData.password = hashPassword;
+      }
+
+      await User.update(updatedData, { where: { id } });
+
+      const updatedUser = await User.findOne({ where: { id }, attributes: { exclude: ["password"] } });
+      return res.json(updatedUser);
+    } catch (e) {
+      next(ApiError.badRequest(e.message));
+    }
+  }
+  async deleteUser(req, res, next) {
+    const { id } = req.params;
+    try {
+      const user = await User.findOne({ where: { id } });
+      if (!user) {
+        return next(ApiError.internal("Пользователь не найден"));
+      }
+      await User.destroy({ where: { id } });
+      return res.json({ message: "Пользователь удален" });
+    } catch (e) {
+      return next(ApiError.badRequest(e.message));
+    }
+  }
 }
 
 module.exports = new UserController();

@@ -10,7 +10,5 @@ router.get("/getall", userController.getUsers); //получение польз�
 router.get("/:id", userController.getOneUser); //получение определенного пользователя по id(http://localhost:8080/api/user/{user_id})
 router.put("/edit", userController.updateUser); //изменение пользователя(http://localhost:8080/api/user?id=1)
 router.delete("/:id", userController.deleteUser); //удаление пользователя (http://localhost:8080/api/user/{user_id})
-router.get("/isadmin", userController.isUserAdmin); //проверка есть ли права админа у пользователя
-//(http://localhost:8080/api/user/isadmin?id=1)
 
 module.exports = router;
