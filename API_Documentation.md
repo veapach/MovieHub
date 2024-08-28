@@ -1,6 +1,6 @@
 # Документация к API MovieHub
 
-## + /api/user:
+## /api/user:
 
   1. `POST` /registration
     В body запроса указывать nickname(string), email(string), password(string), avatar(file), role(USER|ADMIN, default - USER), reg_date(не обязателен, по дефолту будет date.now)
@@ -27,7 +27,7 @@
   7. `DELETE` /{user_id} (id=id пользователя)
     Удаляет пользователя по ID
 
-## + /api/film:
+## /api/film:
   1. `POST` 
     Создание фильма. Запрос проверяет есть ли у пользователя права ADMIN(с помощью токена, который нужно указать в headers. Ключ - Authorization, Value - Bearer `{token}`(после слова Bearer пробел))
     В body указывать name(string), genre(string), year_of_release(string), cast_members(string || array(string)), description(text), duration(string), trailer(string), is_serial(bool), rating(string)
@@ -53,7 +53,7 @@
     Запрос проверяет есть ли у пользователя права ADMIN(с помощью токена, который нужно указать в headers. Ключ - Authorization, Value - Bearer `{token}`(после слова Bearer пробел))
     Удаляет фильм по ID
 
-## + /api/review
+## /api/review
 
   1. `POST` 
     Создание отзыва
