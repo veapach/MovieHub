@@ -1,61 +1,81 @@
-const db = require("../db");
+const { Review } = require("../models/models");
+const ApiError = require("../error/ApiError");
 
 class ReviewController {
   //функция создания отзыва, post запрос когда пользователь нажимает кнопку отправить запрос, все данные в json передаются в body.
-  async createReview(req, res) {
-    const { user_id, film_id, review, rating } = req.body; //нужно будет передавать в body эти данные(review = текст из окошка с отзывом, rating = оценка которую поставил пользователь с помощью ползунка)
-    const newReview = await db.query(
-      "INSERT INTO reviews (user_id, film_id, review, rating) VALUES ($1, $2, $3, $4) RETURNING *",
-      [user_id, film_id, review, rating]
-    ); //добавление в таблицу reviews этот отзыв. общая таблица всех reviews, чтобы потом можно было на странице с фильмом вытаскиывать все отзывы к нему с помощью film_id. А также можно было выбрать все отзывы пользователя по user_id(функция getReviewsByUser)
-    res.json(newReview.rows[0]);
+  async createReview(req, res, next) {
+    try {
+      const { user_id, film_id, review_text, rating, date_of_review } = req.body;
+      const review = await Review.create({ user_id, film_id, review_text, rating, date_of_review });
+      return res.json(review);
+    } catch (e) {
+      next(ApiError.badRequest(e.message));
+    }
+  }
+
+  //Получение всех отзывов
+  async getAllReviews(req, res, next) {
+    try {
+      const reviews = await Review.findAll();
+      return res.json(reviews);
+    } catch (e) {
+      next(ApiError.badRequest(e.message));
+    }
   }
 
   //удаление отзыва
-  async deleteReview(req, res) {
-    const id = req.params.id;
-    const review = await db.query("DELETE FROM reviews WHERE id = $1 RETURNING *", [id]);
-    res.json(review.rows[0]);
+  async deleteReview(req, res, next) {
+    try {
+      const { id } = req.params;
+      await Review.destroy({ where: { id } });
+      return res.json({ message: "Отзыв удален" });
+    } catch (e) {
+      next(ApiError.badRequest(e.message));
+    }
   }
 
   //получение всех отзывов к фильму
-  async getAllReviewsForFilm(req, res) {
-    const film_id = req.query.id;
-    const reviews = await db.query("SELECT * FROM reviews WHERE film_id = $1", [film_id]);
-    res.json(reviews.rows);
+  async getAllReviewsForFilm(req, res, next) {
+    try {
+      const { film_id } = req.query;
+      const reviews = await Review.findAll({ where: { film_id } });
+      return res.json(reviews);
+    } catch (e) {
+      next(ApiError.badRequest(e.message));
+    }
   }
 
+  //Получить отзыв к фильму от пользователя
+  async getReviewFromUserForFilm(req, res, next) {
+    try {
+      const { user_id, film_id } = req.query;
+      const review = await Review.findAll({ where: { user_id, film_id } });
+      return res.json(review);
+    } catch (e) {
+      next(ApiError.badRequest(e.message));
+    }
+  }
   //получить отзывы по пользователю
-  async getReviewsByUser(req, res) {
-    const user_id = req.query.id;
-    const reviews = await db.query("SELECT * FROM reviews WHERE user_id = $1", [user_id]);
-    res.json(reviews.rows);
+  async getReviewsByUser(req, res, next) {
+    try {
+      const { user_id } = req.query;
+      const reviews = await Review.findAll({ where: { user_id } });
+      return res.json(reviews);
+    } catch (e) {
+      next(ApiError.badRequest(e.message));
+    }
   }
 
   //Изменение отзыва
-  async editReview(req, res) {
-    const review_id = req.query.id;
-    const { review, rating } = req.body;
-    const newReview = await db.query("UPDATE reviews SET review = $1, rating = $2 WHERE id = $3 RETURNING *", [
-      review,
-      rating,
-      review_id,
-    ]);
-    res.json(newReview.rows[0]);
-  }
-
-  // Получение средней оценки для определенного фильма
-  async getAverageRating(req, res) {
-    const film_id = req.query.film_id;
-    const result = await db.query("SELECT AVG(rating) AS average_rating FROM reviews WHERE film_id = $1", [film_id]);
-    const averageRating = result.rows[0].average_rating;
-
-    // Проверка, чтобы избежать возврата null, если нет отзывов для фильма
-    if (averageRating === null) {
-      return res.status(404).json({ message: "Нет отзывов для данного фильма" });
+  async editReview(req, res, next) {
+    try {
+      const { id } = req.query;
+      const { review_text, rating, date_of_review } = req.body;
+      const review = await Review.update({ review_text, rating, date_of_review }, { where: { id } });
+      return res.json(review);
+    } catch (e) {
+      next(ApiError.badRequest(e.message));
     }
-
-    res.json({ averageRating: parseFloat(averageRating).toFixed(2) });
   }
 }
 

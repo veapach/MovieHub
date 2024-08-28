@@ -78,10 +78,14 @@ class filmController {
       next(ApiError.badRequest(e.message));
     }
   }
-  async deleteFilm(req, res) {
-    const { id } = req.params;
-    await Film.destroy({ where: { id } });
-    return res.json({ message: "Film deleted" });
+  async deleteFilm(req, res, next) {
+    try {
+      const { id } = req.params;
+      await Film.destroy({ where: { id } });
+      return res.json({ message: "Фильм удален" });
+    } catch (e) {
+      next(ApiError.badRequest(e.message));
+    }
   }
 }
 
