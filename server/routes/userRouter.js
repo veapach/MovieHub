@@ -10,5 +10,6 @@ router.get("/getall", userController.getUsers); //получение польз�
 router.get("/:id", userController.getOneUser); //получение определенного пользователя по id(http://localhost:8080/api/user/{user_id})
 router.put("/edit", userController.updateUser); //изменение пользователя(http://localhost:8080/api/user/edit?id=1)
 router.delete("/:id", userController.deleteUser); //удаление пользователя (http://localhost:8080/api/user/{user_id})
+router.put("/add_friend", userController.addFriend); //Добавление в друзья (http://localhost:8080/api/user/add_friend?id={user_id}), в body friendId.
 
 module.exports = router;

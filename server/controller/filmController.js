@@ -7,8 +7,7 @@ const { Op } = require("sequelize");
 class filmController {
   async createFilm(req, res, next) {
     try {
-      const { name, genre, year_of_release, cast_members, description, duration, trailer, is_serial, rating } =
-        req.body;
+      const { name, genre, year_of_release, cast_members, description, duration, trailer, rating } = req.body;
       const { img } = req.files;
       let fileName = uuid.v4() + ".jpg";
       img.mv(path.resolve(__dirname, "..", "static", fileName));
@@ -21,7 +20,6 @@ class filmController {
         description,
         duration,
         trailer,
-        is_serial,
         rating,
       });
       return res.json(film);
@@ -35,18 +33,22 @@ class filmController {
     limit = limit || 10;
     let offset = page * limit - limit;
     let films;
-    if (!genre && !rating) {
-      films = await Film.findAndCountAll({ limit, offset });
-    }
-    if (genre && !rating) {
-      films = await Film.findAndCountAll({ where: { genre }, limit, offset });
-    }
-    if (!genre && rating) {
-      films = await Film.findAndCountAll({ where: { rating: { [Op.gte]: rating } }, limit, offset });
-    }
-    if (genre && rating) {
-      films = await Film.findAndCountAll({ where: { genre, rating: { [Op.gte]: rating } }, limit, offset });
-    }
+    const whereClause = {};
+    if (genre) whereClause.genre = genre;
+    if (rating) whereClause.rating = { [Op.gte]: rating };
+    films = await Film.findAndCountAll({ where: whereClause, limit, offset });
+    // if (!genre && !rating) {
+    //   films = await Film.findAndCountAll({ limit, offset });
+    // }
+    // if (genre && !rating) {
+    //   films = await Film.findAndCountAll({ where: { genre }, limit, offset });
+    // }
+    // if (!genre && rating) {
+    //   films = await Film.findAndCountAll({ where: { rating: { [Op.gte]: rating } }, limit, offset });
+    // }
+    // if (genre && rating) {
+    //   films = await Film.findAndCountAll({ where: { genre, rating: { [Op.gte]: rating } }, limit, offset });
+    // }
     return res.json(films);
   }
   async getFilmById(req, res) {
@@ -69,7 +71,7 @@ class filmController {
       const [updated] = await Film.update(updateData, { where: { id } });
 
       if (!updated) {
-        return res.status(404).json({ message: "Film not found" });
+        return res.status(404).json({ message: "Фильм не найден" });
       }
 
       const updatedFilm = await Film.findOne({ where: { id } });
