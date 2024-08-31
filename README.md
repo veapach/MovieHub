@@ -11,7 +11,5 @@ DataBase GUI - DBeaver
 
 TO-DO [BACKEND]:
 
-1. Разделить фильмы и сериалы на разные БД
-2. API к User(add friends)
-3. Парсер с IMDB, RottenTomatoes
-4. Что еще может понадобиться на фронте - дописать
+1. Парсер с IMDB, RottenTomatoes
+2. Что еще может понадобиться на фронте - дописать
