@@ -1,6 +1,5 @@
 const { Film } = require("../models/models");
 const ApiError = require("../error/ApiError");
-const uuid = require("uuid");
 const path = require("path");
 const { Op } = require("sequelize");
 
@@ -9,8 +8,8 @@ class filmController {
     try {
       const { name, genre, year_of_release, cast_members, description, duration, trailer, rating } = req.body;
       const { img } = req.files;
-      let fileName = uuid.v4() + ".jpg";
-      img.mv(path.resolve(__dirname, "..", "static", fileName));
+      let fileName = `${name}_poster.jpg`;
+      img.mv(path.resolve(__dirname, "..", "static/posters", fileName));
       const film = await Film.create({
         name,
         poster: fileName,
@@ -60,11 +59,21 @@ class filmController {
     try {
       const { id } = req.query;
       const updateData = req.body;
+      const { name } = req.body;
 
       if (req.files && req.files.img) {
         const { img } = req.files;
-        let fileName = uuid.v4() + ".jpg";
-        img.mv(path.resolve(__dirname, "..", "static", fileName));
+        let fileName;
+        if (name) {
+          fileName = `${name}_poster.jpg`;
+        } else {
+          const film = await Film.findByPk(id);
+          if (!film) {
+            return res.status(404).json({ message: "Фильм не найден" });
+          }
+          fileName = `${film.name}_poster.jpg`;
+        }
+        img.mv(path.resolve(__dirname, "..", "static/posters", fileName));
         updateData.poster = fileName;
       }
 

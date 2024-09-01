@@ -2,6 +2,7 @@ const ApiError = require("../error/ApiError");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const { User, WatchList, WatchedList } = require("../models/models");
+const { validationResult } = require("express-validator");
 
 const generateJwt = (id, email, role) => {
   return jwt.sign({ id, email, role }, process.env.SECRET_KEY, { expiresIn: "24h" });
@@ -9,20 +10,31 @@ const generateJwt = (id, email, role) => {
 
 class UserController {
   async registration(req, res, next) {
-    const { nickname, email, password, avatar, role, reg_date } = req.body;
-    if (!email || !password) {
-      return next(ApiError.badRequest("Некорректный email или password"));
+    try {
+      const errors = validationResult(req);
+      if (!errors.isEmpty) {
+        return res.status(400).json({ message: "Ошибка при регистрации", errors });
+      }
+      const { nickname, email, password, avatar, role, reg_date } = req.body;
+      if (!email || !password) {
+        return next(ApiError.badRequest("Некорректный email или password"));
+      }
+      const candidate = await User.findOne({ where: { email } });
+      if (candidate) {
+        return next(ApiError.badRequest("Пользователь с таким email уже существует"));
+      }
+      const hashPassword = await bcrypt.hash(password, 5);
+      const { img } = req.files;
+      const fileName = `${nickname}_avatar.jpg`;
+      img.mv(path.resolve(__dirname, "..", "static/avatars", fileName));
+      const user = await User.create({ nickname, email, password: hashPassword, avatar: fileName, role, reg_date });
+      const watch_list = await WatchList.create({ userId: user.id });
+      const watched_list = await WatchedList.create({ userId: user.id });
+      const token = generateJwt(user.id, user.email, user.role);
+      return res.json({ token });
+    } catch (e) {
+      next(ApiError.badRequest(e.message));
     }
-    const candidate = await User.findOne({ where: { email } });
-    if (candidate) {
-      return next(ApiError.badRequest("Пользователь с таким email уже существует"));
-    }
-    const hashPassword = await bcrypt.hash(password, 5);
-    const user = await User.create({ nickname, email, password: hashPassword, avatar, role, reg_date });
-    const watch_list = await WatchList.create({ userId: user.id });
-    const watched_list = await WatchedList.create({ userId: user.id });
-    const token = generateJwt(user.id, user.email, user.role);
-    return res.json({ token });
   }
   async login(req, res, next) {
     const { email, password } = req.body;
@@ -30,14 +42,10 @@ class UserController {
     if (!user) {
       return next(ApiError.internal("Пользователь не найден"));
     }
-    let comparePassword = bcrypt.compareSync(password, user.password);
+    const comparePassword = bcrypt.compareSync(password, user.password);
     if (!comparePassword) {
       return next(ApiError.internal("Указан неверный пароль"));
     }
-    const token = generateJwt(user.id, user.email, user.role);
-    return res.json({ token });
-  }
-  async auth(req, res) {
     const token = generateJwt(user.id, user.email, user.role);
     return res.json({ token });
   }
@@ -54,6 +62,7 @@ class UserController {
     try {
       const { id } = req.query;
       const { nickname, email, password, avatar } = req.body;
+      const { img } = req.files;
 
       const user = await User.findOne({ where: { id } });
 
@@ -61,7 +70,15 @@ class UserController {
         return next(ApiError.notFound("Пользователь не найден"));
       }
 
-      let updatedData = { nickname, email, avatar };
+      let fileName;
+      if (nickname) {
+        fileName = `${nickname}_poster.jpg`;
+      } else {
+        fileName = `${user.nickname}_poster.jpg`;
+      }
+      img.mv(path.resolve(__dirname, "..", "static/posters", fileName));
+
+      let updatedData = { nickname, email, avatar: fileName };
       if (password) {
         const hashPassword = await bcrypt.hash(password, 5);
         updatedData.password = hashPassword;
