@@ -1,12 +1,14 @@
 import React from "react";
-import sobiratel from "../../../../../server/static/6ece78d0-8df8-4898-9539-b6901082195a.jpg";
+import avangers from '../../assets/FilmCards/avangers.jpg'
+import drive from '../../assets/FilmCards/drive.jpg'
+import fightclub from '../../assets/FilmCards/fightclub.jpg'
 
 export const FilmCard = () => {
   return (
     <div className="card" style={{ width: "200px" }}>
-      <img src={sobiratel} alt="film" className="card-img-top" />
+      <img src={avangers} alt="film" className="card-img-top" style={{ height: "25%"}}/>
       <div className="card-body">
-        <h5 className="card-title">Sobiratel</h5>
+        <h5 className="card-title">Avangers</h5>
       </div>
     </div>
   );

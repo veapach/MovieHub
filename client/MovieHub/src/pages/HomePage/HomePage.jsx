@@ -2,6 +2,10 @@ import React from "react";
 import "./homePage.css";
 import { FilmCard } from "../../components/FilmCard/FilmCard";
 
+import avangers from '../../assets/FilmCards/avangers.jpg'
+import drive from '../../assets/FilmCards/drive.jpg'
+import fightclub from '../../assets/FilmCards/fightclub.jpg'
+
 const HomePage = () => {
   return (
     <div className="homepage-wrapper container-fluid">
@@ -24,8 +28,16 @@ const HomePage = () => {
             <a href="#">Выбор MovieHub</a>
           </h3>
         </div>
-        <div>
-          <FilmCard />
+        <div className="row" >
+          <div className="col-md-3">
+            <FilmCard />
+          </div>
+          <div className="col-md-3">
+            <FilmCard />
+          </div>
+          <div className="col-md-3">
+            <FilmCard />
+          </div>
         </div>
       </div>
     </div>
