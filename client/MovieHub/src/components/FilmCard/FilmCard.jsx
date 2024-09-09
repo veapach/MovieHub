@@ -3,6 +3,18 @@ import avangers from '../../assets/FilmCards/avangers.jpg'
 import drive from '../../assets/FilmCards/drive.jpg'
 import fightclub from '../../assets/FilmCards/fightclub.jpg'
 
+const films = [
+  {title: "Avangers", imgSrc: '../../assets/FilmCards/avangers.jpg'},
+  {title: "Avangers", imgSrc: '../../assets/FilmCards/avangers.jpg'},
+  {title: "Avangers", imgSrc: '../../assets/FilmCards/avangers.jpg'},
+  {title: "Avangers", imgSrc: '../../assets/FilmCards/avangers.jpg'},
+  {title: "Avangers", imgSrc: '../../assets/FilmCards/avangers.jpg'},
+  {title: "Avangers", imgSrc: '../../assets/FilmCards/avangers.jpg'},
+  {title: "Avangers", imgSrc: '../../assets/FilmCards/avangers.jpg'},
+  {title: "Avangers", imgSrc: '../../assets/FilmCards/avangers.jpg'},
+  {title: "Avangers", imgSrc: '../../assets/FilmCards/avangers.jpg'},
+  {title: "Avangers", imgSrc: '../../assets/FilmCards/avangers.jpg'},
+]
 export const FilmCard = () => {
   return (
     <div className="card" style={{ width: "200px" }}>
