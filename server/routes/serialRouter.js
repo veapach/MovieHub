@@ -1,11 +1,12 @@
-const Router = require("express");
+const Router = require('express');
 const router = new Router();
-const serialController = require("../controller/serialController");
+const serialController = require('../controller/serialController');
+const checkRole = require('../middleware/checkRoleMiddleware');
 
-router.post("/series", checkRole("ADMIN"), serialController.createSerial);
-router.get("/series", serialController.getSerials);
-router.get("/series/:id", serialController.getSerialById);
-router.put("/series/:id", checkRole("ADMIN"), serialController.editSerial);
-router.delete("/series/:id", checkRole("ADMIN"), serialController.deleteSerial);
+router.post('/series', checkRole('ADMIN'), serialController.createSerial);
+router.get('/series', serialController.getSerials);
+router.get('/series/:id', serialController.getSerialById);
+router.put('/series/:id', checkRole('ADMIN'), serialController.editSerial);
+router.delete('/series/:id', checkRole('ADMIN'), serialController.deleteSerial);
 
 module.exports = router;
