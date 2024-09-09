@@ -1,27 +1,19 @@
-import React from "react";
-import avangers from '../../assets/FilmCards/avangers.jpg'
-import drive from '../../assets/FilmCards/drive.jpg'
-import fightclub from '../../assets/FilmCards/fightclub.jpg'
+import React from 'react';
 
-const films = [
-  {title: "Avangers", imgSrc: '../../assets/FilmCards/avangers.jpg'},
-  {title: "Avangers", imgSrc: '../../assets/FilmCards/avangers.jpg'},
-  {title: "Avangers", imgSrc: '../../assets/FilmCards/avangers.jpg'},
-  {title: "Avangers", imgSrc: '../../assets/FilmCards/avangers.jpg'},
-  {title: "Avangers", imgSrc: '../../assets/FilmCards/avangers.jpg'},
-  {title: "Avangers", imgSrc: '../../assets/FilmCards/avangers.jpg'},
-  {title: "Avangers", imgSrc: '../../assets/FilmCards/avangers.jpg'},
-  {title: "Avangers", imgSrc: '../../assets/FilmCards/avangers.jpg'},
-  {title: "Avangers", imgSrc: '../../assets/FilmCards/avangers.jpg'},
-  {title: "Avangers", imgSrc: '../../assets/FilmCards/avangers.jpg'},
-]
-export const FilmCard = () => {
+const FilmCard = ({ film }) => {
   return (
-    <div className="card" style={{ width: "200px" }}>
-      <img src={avangers} alt="film" className="card-img-top" style={{ height: "25%"}}/>
-      <div className="card-body">
-        <h5 className="card-title">Avangers</h5>
-      </div>
+    <div className="film-card">
+      <img src={`http://localhost:8080/static/posters/${film.poster}`} alt={film.name} className="film-poster" />
+      <h2>{film.name}</h2>
+      <p><strong>Жанр:</strong> {film.genre}</p>
+      <p><strong>Год выпуска:</strong> {film.year_of_release}</p>
+      <p><strong>Актеры:</strong> {film.cast_members.join(', ')}</p>
+      <p><strong>Описание:</strong> {film.description}</p>
+      <p><strong>Длительность:</strong> {film.duration}</p>
+      <p><strong>Рейтинг:</strong> {film.rating}</p>
+      <a href={film.trailer} target="_blank" rel="noopener noreferrer">Смотреть трейлер</a>
     </div>
   );
 };
+
+export default FilmCard;

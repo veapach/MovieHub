@@ -1,12 +1,25 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import "./homePage.css";
-import { FilmCard } from "../../components/FilmCard/FilmCard";
-
-import avangers from '../../assets/FilmCards/avangers.jpg'
-import drive from '../../assets/FilmCards/drive.jpg'
-import fightclub from '../../assets/FilmCards/fightclub.jpg'
+import FilmCard from "../../components/FilmCard/FilmCard";
+import axios from 'axios';
 
 const HomePage = () => {
+  const [films, setFilms] = useState([]);
+
+  useEffect(() => {
+    // Запрос к API для получения фильмов
+    const fetchFilms = async () => {
+      try {
+        const response = await axios.get('http://localhost:8080/api/film');
+        setFilms(response.data.rows); // Сохраняем фильмы в состояние
+      } catch (error) {
+        console.error('Ошибка при получении данных:', error);
+      }
+    };
+
+    fetchFilms(); // Вызов функции при монтировании компонента
+  }, []);
+
   return (
     <div className="homepage-wrapper container-fluid">
       <div className="greeting-sign">
@@ -18,26 +31,13 @@ const HomePage = () => {
             <a href="#">Новинки</a>
           </h3>
         </div>
-        <div className="collection-slider best-films">
-          <h3 className="collection-name">
-            <a href="#">Лучшие проекты</a>
-          </h3>
-        </div>
-        <div className="collection-slider moviehub-films">
-          <h3 className="collection-name">
-            <a href="#">Выбор MovieHub</a>
-          </h3>
-        </div>
-        <div className="row" >
-          <div className="col-md-3">
-            <FilmCard />
-          </div>
-          <div className="col-md-3">
-            <FilmCard />
-          </div>
-          <div className="col-md-3">
-            <FilmCard />
-          </div>
+        <div className="row">
+          {/* Рендерим каждую карточку фильма динамически */}
+          {films.map((film) => (
+            <div key={film.id} className="col-md-3">
+              <FilmCard film={film} />
+            </div>
+          ))}
         </div>
       </div>
     </div>
