@@ -1,3 +1,9 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat+Alternates:wght@400;500;600&display=swap');
+
 .wrapper {
   background: #272525;
+}
+
+* {
+  font-family: 'Montserrat Alternates', sans-serif;
 }

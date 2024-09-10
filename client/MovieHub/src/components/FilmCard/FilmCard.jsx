@@ -1,18 +1,23 @@
 import React from 'react';
+import './FilmCard.css';
 
 const FilmCard = ({ film }) => {
   return (
-    <div className="film-card">
-      <img src={`http://localhost:8080/static/posters/${film.poster}`} alt={film.name} className="film-poster" />
-      <h2>{film.name}</h2>
-      <p><strong>Жанр:</strong> {film.genre}</p>
-      <p><strong>Год выпуска:</strong> {film.year_of_release}</p>
-      <p><strong>Актеры:</strong> {film.cast_members.join(', ')}</p>
-      <p><strong>Описание:</strong> {film.description}</p>
-      <p><strong>Длительность:</strong> {film.duration}</p>
-      <p><strong>Рейтинг:</strong> {film.rating}</p>
-      <a href={film.trailer} target="_blank" rel="noopener noreferrer">Смотреть трейлер</a>
-    </div>
+    <a href={`#тут должна быть ссылка на карточку с фильмом/${film.id}`} className="film-card card">
+      <div className="poster-container">
+        {/* Вертикальный постер */}
+        <img src={`http://localhost:8080/static/posters/${film.poster}`} alt={film.name} className="film-poster" />
+        {/* Рейтинг в углу постера */}
+        <div className="rating-badge">
+          <span>{film.rating}</span>
+        </div>
+      </div>
+      <div className="card-body">
+        <h5 className="card-title">{film.name}</h5>
+        <p className="card-genre"><strong>Жанр:</strong> {film.genre}</p>
+        <p className="card-year"><strong>Год выпуска:</strong> {film.year_of_release}</p>
+      </div>
+    </a>
   );
 };
 
