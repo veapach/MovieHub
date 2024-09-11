@@ -12,9 +12,9 @@ const Header = () => {
             src={`http://localhost:8080/static/images/MovieHub_Logo.png`}
             alt="Movie Hub Logo"
           />
-          <ul className="navbar-nav ms-auto">
+          <ul className="navbar-nav">
             <li className="nav-item">
-              <a className="nav-link" href="#">
+              <a className="nav-link" href="/">
                 Главная
               </a>
             </li>

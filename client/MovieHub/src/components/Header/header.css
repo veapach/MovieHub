@@ -6,6 +6,7 @@
 
 .navbar-brand {
   width: 7%;
+  padding-right: 5px;
 }
 
 .custom-navbar {
@@ -22,14 +23,14 @@
   padding-left: 0;
 }
 
-.ms-auto {
-  margin-left: auto;
-}
-
 .nav-link {
   color: white;
 }
 
 .nav-link:hover {
   color: #ddd;
+}
+
+.nav-item{
+  font-size: 25px;
 }
