@@ -5,6 +5,7 @@ import Header from "./components/Header/Header";
 import Footer from "./components/Footer/Footer";
 import HomePage from "./pages/HomePage/HomePage";
 import FilmPage from "./pages/filmPage/filmPage";
+import AdminPanel from "./pages/adminPanel/AdminPanel";
 
 function App() {
   return (
@@ -14,6 +15,7 @@ function App() {
         <Routes>
           <Route path="/" element={<HomePage />} />
           <Route path="/film/:id" element={<FilmPage />} />
+          <Route path="/adminPanel" element={<AdminPanel />} />
         </Routes>
         <Footer />
       </div>

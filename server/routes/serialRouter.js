@@ -3,10 +3,12 @@ const router = new Router();
 const serialController = require('../controller/serialController');
 const checkRole = require('../middleware/checkRoleMiddleware');
 
-router.post('/series', checkRole('ADMIN'), serialController.createSerial);
-router.get('/series', serialController.getSerials);
-router.get('/series/:id', serialController.getSerialById);
-router.put('/series/:id', checkRole('ADMIN'), serialController.editSerial);
-router.delete('/series/:id', checkRole('ADMIN'), serialController.deleteSerial);
+//checkRole('ADMIN')
+
+router.post('/', serialController.createSerial);
+router.get('/', serialController.getSerials);
+router.get('/:id', serialController.getSerialById);
+router.put('/:id', serialController.editSerial);
+router.delete('/:id', serialController.deleteSerial);
 
 module.exports = router;

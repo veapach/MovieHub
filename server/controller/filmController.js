@@ -31,15 +31,12 @@ class filmController {
     }
   }
   async getFilms(req, res) {
-    let { genre, rating, limit, page } = req.query;
-    page = page || 1;
-    limit = limit || 10;
-    let offset = page * limit - limit;
+    let { genre, rating } = req.query;
     let films;
     const whereClause = {};
     if (genre) whereClause.genre = genre;
     if (rating) whereClause.rating = { [Op.gte]: rating };
-    films = await Film.findAndCountAll({ where: whereClause, limit, offset });
+    films = await Film.findAndCountAll({ where: whereClause });
     return res.json(films);
   }
   async getFilmById(req, res) {
