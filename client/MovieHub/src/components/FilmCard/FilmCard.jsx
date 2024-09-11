@@ -3,7 +3,7 @@ import './FilmCard.css';
 
 const FilmCard = ({ film }) => {
   return (
-    <a href={`#тут должна быть ссылка на карточку с фильмом/${film.id}`} className="film-card card">
+    <a href={`/film/${film.id}`} className="film-card card">
       <div className="poster-container">
         {/* Вертикальный постер */}
         <img src={`http://localhost:8080/static/posters/${film.poster}`} alt={film.name} className="film-poster" />
