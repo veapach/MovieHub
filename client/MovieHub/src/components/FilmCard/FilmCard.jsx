@@ -1,27 +1,24 @@
-import React from "react";
-import avangers from '../../assets/FilmCards/avangers.jpg'
-import drive from '../../assets/FilmCards/drive.jpg'
-import fightclub from '../../assets/FilmCards/fightclub.jpg'
+import React from 'react';
+import './FilmCard.css';
 
-const films = [
-  {title: "Avangers", imgSrc: '../../assets/FilmCards/avangers.jpg'},
-  {title: "Avangers", imgSrc: '../../assets/FilmCards/avangers.jpg'},
-  {title: "Avangers", imgSrc: '../../assets/FilmCards/avangers.jpg'},
-  {title: "Avangers", imgSrc: '../../assets/FilmCards/avangers.jpg'},
-  {title: "Avangers", imgSrc: '../../assets/FilmCards/avangers.jpg'},
-  {title: "Avangers", imgSrc: '../../assets/FilmCards/avangers.jpg'},
-  {title: "Avangers", imgSrc: '../../assets/FilmCards/avangers.jpg'},
-  {title: "Avangers", imgSrc: '../../assets/FilmCards/avangers.jpg'},
-  {title: "Avangers", imgSrc: '../../assets/FilmCards/avangers.jpg'},
-  {title: "Avangers", imgSrc: '../../assets/FilmCards/avangers.jpg'},
-]
-export const FilmCard = () => {
+const FilmCard = ({ film }) => {
   return (
-    <div className="card" style={{ width: "200px" }}>
-      <img src={avangers} alt="film" className="card-img-top" style={{ height: "25%"}}/>
-      <div className="card-body">
-        <h5 className="card-title">Avangers</h5>
+    <a href={`#тут должна быть ссылка на карточку с фильмом/${film.id}`} className="film-card card">
+      <div className="poster-container">
+        {/* Вертикальный постер */}
+        <img src={`http://localhost:8080/static/posters/${film.poster}`} alt={film.name} className="film-poster" />
+        {/* Рейтинг в углу постера */}
+        <div className="rating-badge">
+          <span>{film.rating}</span>
+        </div>
       </div>
-    </div>
+      <div className="card-body">
+        <h5 className="card-title">{film.name}</h5>
+        <p className="card-genre"><strong>Жанр:</strong> {film.genre}</p>
+        <p className="card-year"><strong>Год выпуска:</strong> {film.year_of_release}</p>
+      </div>
+    </a>
   );
 };
+
+export default FilmCard;

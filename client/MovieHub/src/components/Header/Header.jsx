@@ -1,5 +1,4 @@
 import React from "react";
-import MovieHubLogo from "../../assets/images/MovieHubLogo.png";
 import "./header.css";
 
 const Header = () => {
@@ -8,11 +7,11 @@ const Header = () => {
       <nav className="navbar navbar-expand-lg custom-navbar">
         <div className="container-fluid">
           {/* TODO: найти нормальную картинку логотипа */}
-          {/* <img
+          <img
             className="navbar-brand"
-            src={MovieHubLogo}
+            src={`http://localhost:8080/static/images/MovieHub_Logo.png`}
             alt="Movie Hub Logo"
-          /> */}
+          />
           <ul className="navbar-nav ms-auto">
             <li className="nav-item">
               <a className="nav-link" href="#">

@@ -1,3 +1,109 @@
-.homepage-wrapper {
+/* .homepage-wrapper {
   width: 90%;
+} */
+/* Общий контейнер для страницы */
+.homepage-wrapper {
+  padding: 20px;
+  background-color: #272525;
+  color: white;
+}
+
+/* Заголовок приветствия */
+.greeting-sign h1 {
+  font-size: 2.5em;
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.film-collection-home{
+  padding-inline: 5%;
+}
+
+/* Заголовок раздела */
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.collection-name a {
+  font-size: 1.5em;
+  font-weight: bold;
+  text-decoration: none;
+  color: white;
+}
+
+.collection-name a:hover {
+  color: #ffc107; /* Желтый цвет при наведении */
+}
+
+.slider-film-row {
+  display: flex;
+  gap: 20px;
+  overflow-x: auto;
+  padding-bottom: 10px;
+  margin-bottom: 20px;
+  flex-wrap: nowrap;
+  white-space: nowrap;
+}
+
+.slider-film-row::-webkit-scrollbar {
+  display: none;
+}
+
+.slider-controls {
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+  top: -50px;
+  width: 100%;
+}
+
+.slider-arrow {
+  background-color: transparent;
+  border: none;
+  color: white;
+  font-size: 2em;
+  cursor: pointer;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 10;
+}
+
+.slider-arrow.left-arrow {
+  left: 10px;
+}
+
+.slider-arrow.right-arrow {
+  right: 10px;
+}
+
+
+/* Стили для FilmCard */
+.film-card {
+  min-width: 180px; /* фиксированная ширина карточки */
+}
+
+.col-md-3 {
+  width: 250px; /* Фиксированная ширина карточки */
+}
+
+
+/* Тень на границе слайдера */
+.collection-slider {
+  position: relative;
+  padding-right: 30px;
+}
+
+.collection-slider::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  height: 100%;
+  width: 50px;
+  background: linear-gradient(to left, #1e1e1e, transparent);
+  pointer-events: none;
 }

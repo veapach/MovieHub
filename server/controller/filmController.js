@@ -1,15 +1,19 @@
-const { Film } = require("../models/models");
-const ApiError = require("../error/ApiError");
-const path = require("path");
-const { Op } = require("sequelize");
+const { Film } = require('../models/models');
+const ApiError = require('../error/ApiError');
+const path = require('path');
+const { Op } = require('sequelize');
+const { transliterate } = require('transliteration');
 
 class filmController {
   async createFilm(req, res, next) {
     try {
       const { name, genre, year_of_release, cast_members, description, duration, trailer, rating } = req.body;
       const { img } = req.files;
-      let fileName = `${name}_poster.jpg`;
-      img.mv(path.resolve(__dirname, "..", "static/posters", fileName));
+
+      // Транслитерация имени и удаление пробелов
+      let fileName = `${transliterate(name).replace(/\s+/g, '_')}_poster.jpg`;
+
+      img.mv(path.resolve(__dirname, '..', 'static/posters', fileName));
       const film = await Film.create({
         name,
         poster: fileName,
@@ -36,18 +40,6 @@ class filmController {
     if (genre) whereClause.genre = genre;
     if (rating) whereClause.rating = { [Op.gte]: rating };
     films = await Film.findAndCountAll({ where: whereClause, limit, offset });
-    // if (!genre && !rating) {
-    //   films = await Film.findAndCountAll({ limit, offset });
-    // }
-    // if (genre && !rating) {
-    //   films = await Film.findAndCountAll({ where: { genre }, limit, offset });
-    // }
-    // if (!genre && rating) {
-    //   films = await Film.findAndCountAll({ where: { rating: { [Op.gte]: rating } }, limit, offset });
-    // }
-    // if (genre && rating) {
-    //   films = await Film.findAndCountAll({ where: { genre, rating: { [Op.gte]: rating } }, limit, offset });
-    // }
     return res.json(films);
   }
   async getFilmById(req, res) {
@@ -65,22 +57,23 @@ class filmController {
         const { img } = req.files;
         let fileName;
         if (name) {
-          fileName = `${name}_poster.jpg`;
+          // Транслитерация имени и удаление пробелов
+          fileName = `${transliterate(name).replace(/\s+/g, '_')}_poster.jpg`;
         } else {
           const film = await Film.findByPk(id);
           if (!film) {
-            return res.status(404).json({ message: "Фильм не найден" });
+            return res.status(404).json({ message: 'Фильм не найден' });
           }
-          fileName = `${film.name}_poster.jpg`;
+          fileName = `${transliterate(film.name).replace(/\s+/g, '_')}_poster.jpg`;
         }
-        img.mv(path.resolve(__dirname, "..", "static/posters", fileName));
+        img.mv(path.resolve(__dirname, '..', 'static/posters', fileName));
         updateData.poster = fileName;
       }
 
       const [updated] = await Film.update(updateData, { where: { id } });
 
       if (!updated) {
-        return res.status(404).json({ message: "Фильм не найден" });
+        return res.status(404).json({ message: 'Фильм не найден' });
       }
 
       const updatedFilm = await Film.findOne({ where: { id } });
@@ -93,7 +86,7 @@ class filmController {
     try {
       const { id } = req.params;
       await Film.destroy({ where: { id } });
-      return res.json({ message: "Фильм удален" });
+      return res.json({ message: 'Фильм удален' });
     } catch (e) {
       next(ApiError.badRequest(e.message));
     }
