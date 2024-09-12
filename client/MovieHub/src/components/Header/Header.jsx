@@ -13,6 +13,7 @@ const Header = () => {
             src={`http://localhost:8080/static/images/MovieHub_Logo.png`}
             alt="Movie Hub Logo"
           />
+          <a href="/adminPanel" className="nav-link">Админка(временно)</a>
           <ul className="navbar-nav">
             <li className="nav-item">
               <a className="nav-link" href="/">
@@ -20,7 +21,7 @@ const Header = () => {
               </a>
             </li>
             <li className="nav-item">
-              <a className="nav-link" href="#">
+              <a className="nav-link" href="/films">
                 Фильмы
               </a>
             </li>

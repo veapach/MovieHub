@@ -6,6 +6,7 @@ import Footer from "./components/Footer/Footer";
 import HomePage from "./pages/HomePage/HomePage";
 import FilmPage from "./pages/filmPage/filmPage";
 import AdminPanel from "./pages/adminPanel/AdminPanel";
+import AllFilmsPage from "./pages/allFilmsPage/AllFilmsPage"
 
 function App() {
   return (
@@ -16,6 +17,7 @@ function App() {
           <Route path="/" element={<HomePage />} />
           <Route path="/film/:id" element={<FilmPage />} />
           <Route path="/adminPanel" element={<AdminPanel />} />
+          <Route path="/films" element={<AllFilmsPage />} />
         </Routes>
         <Footer />
       </div>
