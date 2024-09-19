@@ -1,0 +1,60 @@
+.admin-panel {
+  padding: 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.add-item-form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  margin-bottom: 40px;
+}
+
+.add-item-form input,
+.add-item-form select,
+.add-item-form textarea {
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.add-item-form button {
+  padding: 10px;
+  background-color: #5a6268;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.add-item-form button:hover {
+  background-color: #4e555b;
+}
+
+.content-list {
+  list-style: none;
+  padding: 0;
+}
+
+.content-list li {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+  border-bottom: 1px solid #ccc;
+}
+
+.content-list li button {
+  margin-left: 10px;
+  padding: 5px 10px;
+  background-color: #dc3545;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.content-list li button:hover {
+  background-color: #c82333;
+}

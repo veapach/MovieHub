@@ -1,8 +1,8 @@
-const { Serial } = require("../models/models");
-const ApiError = require("../error/ApiError");
-const uuid = require("uuid");
-const path = require("path");
-const { Op } = require("sequelize");
+const { Serial } = require('../models/models');
+const ApiError = require('../error/ApiError');
+const uuid = require('uuid');
+const path = require('path');
+const { Op } = require('sequelize');
 
 class serialController {
   async createSerial(req, res, next) {
@@ -21,8 +21,8 @@ class serialController {
         rating,
       } = req.body;
       const { img } = req.files;
-      let fileName = uuid.v4() + ".jpg";
-      img.mv(path.resolve(__dirname, "..", "static", fileName));
+      let fileName = uuid.v4() + '.jpg';
+      img.mv(path.resolve(__dirname, '..', 'static', fileName));
       const serial = await Serial.create({
         name,
         poster: fileName,
@@ -44,15 +44,12 @@ class serialController {
   }
 
   async getSerials(req, res) {
-    let { genre, rating, limit, page } = req.query;
-    page = page || 1;
-    limit = limit || 10;
-    let offset = page * limit - limit;
+    let { genre, rating } = req.query;
     let serials;
     const whereClause = {};
     if (genre) whereClause.genre = genre;
     if (rating) whereClause.rating = { [Op.gte]: rating };
-    serials = await Serial.findAndCountAll({ where: whereClause, limit, offset });
+    serials = await Serial.findAndCountAll({ where: whereClause });
     return res.json(serials);
   }
 
@@ -69,15 +66,15 @@ class serialController {
 
       if (req.files && req.files.img) {
         const { img } = req.files;
-        let fileName = uuid.v4() + ".jpg";
-        img.mv(path.resolve(__dirname, "..", "static", fileName));
+        let fileName = uuid.v4() + '.jpg';
+        img.mv(path.resolve(__dirname, '..', 'static', fileName));
         updateData.poster = fileName;
       }
 
       const [updated] = await Serial.update(updateData, { where: { id } });
 
       if (!updated) {
-        return res.status(404).json({ message: "Сериал не найден" });
+        return res.status(404).json({ message: 'Сериал не найден' });
       }
 
       const updatedSerial = await Serial.findOne({ where: { id } });
@@ -91,7 +88,7 @@ class serialController {
     try {
       const { id } = req.params;
       await Serial.destroy({ where: { id } });
-      return res.json({ message: "Сериал удален" });
+      return res.json({ message: 'Сериал удален' });
     } catch (e) {
       next(ApiError.badRequest(e.message));
     }

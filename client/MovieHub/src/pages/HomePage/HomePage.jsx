@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import FilmCard from "../../components/FilmCard/FilmCard";
 import "./homePage.css";
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 const HomePage = () => {
   const [films, setFilms] = useState([]); // Начальное состояние - пустой массив

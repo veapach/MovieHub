@@ -1,5 +1,6 @@
 import React from "react";
 import "./header.css";
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 const Header = () => {
   return (
@@ -12,14 +13,15 @@ const Header = () => {
             src={`http://localhost:8080/static/images/MovieHub_Logo.png`}
             alt="Movie Hub Logo"
           />
-          <ul className="navbar-nav ms-auto">
+          <a href="/adminPanel" className="nav-link">Админка(временно)</a>
+          <ul className="navbar-nav">
             <li className="nav-item">
-              <a className="nav-link" href="#">
+              <a className="nav-link" href="/">
                 Главная
               </a>
             </li>
             <li className="nav-item">
-              <a className="nav-link" href="#">
+              <a className="nav-link" href="/films">
                 Фильмы
               </a>
             </li>
